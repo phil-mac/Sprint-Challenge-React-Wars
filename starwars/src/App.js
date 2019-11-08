@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import CharacterCard from './components/CharacterCard';
+import {CssBaseline, Container, Grid, Card, CardContent, Typography} from '@material-ui/core';
 import './App.css';
 
 const App = () => {
@@ -9,10 +11,48 @@ const App = () => {
   // side effect in a component, you want to think about which state and/or props it should
   // sync up with, if any.
 
+  const [charactersState, setCharactersState] = useState([
+    {name: 'Name', gender: 'gender', height: 'height'},
+    {name: 'Name', gender: 'gender', height: 'height'},
+    {name: 'Name', gender: 'gender', height: 'height'},
+    {name: 'Name', gender: 'gender', height: 'height'},
+    {name: 'Name', gender: 'gender', height: 'height'},
+    {name: 'Name', gender: 'gender', height: 'height'},
+    {name: 'Name', gender: 'gender', height: 'height'},
+    {name: 'Name', gender: 'gender', height: 'height'},
+    {name: 'Name', gender: 'gender', height: 'height'},
+    {name: 'Name', gender: 'gender', height: 'height'},
+    {name: 'Name', gender: 'gender', height: 'height'}
+  ]);
+
+  useEffect(() => {
+    const fetchCharacters = () =>{
+      fetch('https://swapi.co/api/people/')
+        .then(res => res.json())
+        .then(data => {
+          console.log(data.results);
+          setCharactersState(data.results);
+        })
+        .catch(err => console.log(err));
+    }
+    fetchCharacters();
+  }, [])
+
   return (
-    <div className="App">
+    <Container className="App" max-width="md">
       <h1 className="Header">React Wars</h1>
-    </div>
+      <Grid container spacing={10}>
+      {
+        charactersState.map((character, index) => {
+          return (
+            <Grid item xs={12} sm={6} md={4}>
+              <CharacterCard key={index} data={character} />
+            </Grid>
+          )
+        })
+      }
+      </Grid>
+    </Container>
   );
 }
 
