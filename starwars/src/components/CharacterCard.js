@@ -19,9 +19,9 @@ export default (props) =>{
         <CharacterCard>
             <CardContent>
                 <Typography variant="h5">{props.data.name}</Typography>
-                <Typography variant="body1">gender: {props.data.gender}</Typography>
-                <Typography variant="body1">height: {props.data.height} cm</Typography>
-                <Typography variant="body1">mass: {props.data.mass} kg</Typography>
+                <Typography variant="body1">{props.data.gender}</Typography>
+                <Typography variant="body1">{props.data.height} cm</Typography>
+                <Typography variant="body1">{props.data.mass} kg</Typography>
             </CardContent>
         </CharacterCard>
     )
