@@ -1,16 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import CharacterCard from './components/CharacterCard';
-import {CssBaseline, Container, Grid, Card, CardContent, Typography, InputBase, Button, ButtonGroup} from '@material-ui/core';
+import {CssBaseline, Container, Grid, InputBase, Button, ButtonGroup} from '@material-ui/core';
 import './App.css';
 
 const App = () => {
-  // Try to think through what state you'll need for this app before starting. Then build out
-  // the state properties here.
-
-  // Fetch characters from the star wars api in an effect hook. Remember, anytime you have a 
-  // side effect in a component, you want to think about which state and/or props it should
-  // sync up with, if any.
-
   const [charactersState, setCharactersState] = useState([
     {name: 'Bob', gender: 'male', height: '170'},
     {name: 'Joe', gender: 'n/a', height: '45'},
@@ -32,7 +25,6 @@ const App = () => {
   function changePage(change){
     let newPage = pageState + change;
     if (newPage === 0) newPage = 1;
-    console.log('new page: ' + newPage);
     setPageState(newPage);
   }
 
@@ -41,7 +33,6 @@ const App = () => {
       fetch(`https://swapi.co/api/people/?page=${pageState}`)
         .then(res => res.json())
         .then(data => {
-          console.log(data);
           setCharactersState(data.results);
         })
         .catch(err => console.log(err));
@@ -56,10 +47,7 @@ const App = () => {
           placeholder="Search…"
           inputProps={{ 'aria-label': 'search' }}
           style={{background: 'white', marginBottom: '20px', padding:'0 10px'}}
-          onChange={(event) => {
-            console.log(event.target.value);
-            setSearchState(event.target.value.toLowerCase());
-          }}
+          onChange={(event) => setSearchState(event.target.value.toLowerCase())}
         />
         <br></br>
       <ButtonGroup
@@ -76,8 +64,8 @@ const App = () => {
           return (character.name.toLowerCase().includes(searchState) || character.gender.includes(searchState) ||character.height.includes(searchState) || character.mass.includes(searchState))
         }).map((character, index) => {
           return (
-            <Grid item xs={12} sm={6} md={4}>
-              <CharacterCard key={index} data={character} />
+            <Grid key={index} item xs={12} sm={6} md={4}>
+              <CharacterCard data={character} />
             </Grid>
           )
         })

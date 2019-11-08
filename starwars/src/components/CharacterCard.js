@@ -5,8 +5,10 @@ import {CssBaseline, Container, Grid, Card, CardContent, Typography} from '@mate
 
 const CharacterCard = styled(Card)`&&{
     background: lightgrey;
+    border: 5px solid ${props => (props.eyecolor)};
+    /* filter:brightness(50%); */
     text-align: left;
-
+    /* color:white; */
     transition: 0.3s;
 
     &:hover{
@@ -16,7 +18,7 @@ const CharacterCard = styled(Card)`&&{
 
 export default (props) =>{
     return(
-        <CharacterCard>
+        <CharacterCard eyecolor={props.data.eye_color}>
             <CardContent>
                 <Typography variant="h5">{props.data.name}</Typography>
                 <Typography variant="body1">{props.data.gender}</Typography>
