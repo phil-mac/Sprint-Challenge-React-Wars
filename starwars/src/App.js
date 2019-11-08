@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import CharacterCard from './components/CharacterCard';
-import {CssBaseline, Container, Grid, Card, CardContent, Typography, InputBase} from '@material-ui/core';
+import {CssBaseline, Container, Grid, Card, CardContent, Typography, InputBase, Button, ButtonGroup} from '@material-ui/core';
 import './App.css';
 
 const App = () => {
@@ -27,31 +27,49 @@ const App = () => {
 
   const [searchState, setSearchState] = useState('');
 
+  const [pageState, setPageState] = useState(1);
+
+  function changePage(change){
+    let newPage = pageState + change;
+    if (newPage === 0) newPage = 1;
+    console.log('new page: ' + newPage);
+    setPageState(newPage);
+  }
+
   useEffect(() => {
     const fetchCharacters = () =>{
-      fetch('https://swapi.co/api/people/')
+      fetch(`https://swapi.co/api/people/?page=${pageState}`)
         .then(res => res.json())
         .then(data => {
-          console.log(data.results);
+          console.log(data);
           setCharactersState(data.results);
         })
         .catch(err => console.log(err));
     }
     fetchCharacters();
-  }, [])
+  }, [pageState])
 
   return (
     <Container className="App" max-width="md">
       <h1 className="Header">React Wars</h1>
       <InputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-              style={{background: 'white', marginBottom: '40px', padding:'0 10px'}}
-              onChange={(event) => {
-                console.log(event.target.value);
-                setSearchState(event.target.value.toLowerCase());
-              }}
-            />
+          placeholder="Search…"
+          inputProps={{ 'aria-label': 'search' }}
+          style={{background: 'white', marginBottom: '20px', padding:'0 10px'}}
+          onChange={(event) => {
+            console.log(event.target.value);
+            setSearchState(event.target.value.toLowerCase());
+          }}
+        />
+        <br></br>
+      <ButtonGroup
+          variant="contained"
+          color="primary"
+          aria-label="full-width contained primary button group"
+          style={{background:'lightgrey', marginBottom: '20px'}}>
+          <Button onClick={() => changePage(-1)} disabled={pageState <= 1}>{'<-- Prev'}</Button>
+          <Button onClick={() => changePage(+1)} disabled={pageState >= 9}>{'Next -->'}</Button>
+      </ButtonGroup>
       <Grid container spacing={5}>
       {
         charactersState.filter(character =>{
